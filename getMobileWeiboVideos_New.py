@@ -33,7 +33,7 @@ def down_video(videodicts):
         start = time.clock()
         response = requests.get(value)
         if response.status_code == 200:
-            # ¹ıÂË
+            # è¿‡æ»¤
             key0 = key.replace('\n','')
             key1 = key0.replace('/','')
             key2 = key1.replace(':','')
@@ -45,20 +45,20 @@ def down_video(videodicts):
             print(stime + " Downloading... : %s" % shortname)
             fn = g_dir + r'/%s.mp4'% fname
             with open( fn , 'wb') as f:                
-                # ÒÔ¶ş½øÖÆĞ´Èëµ½±¾µØ
+                # ä»¥äºŒè¿›åˆ¶å†™å…¥åˆ°æœ¬åœ°
                 f.write(response.content)
                 f.close()
                 end = time.clock()
                 times = (end - start)
                 etime = datetime.datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
                 print(etime + " Download Over   : %s" % shortname)
-                print(" ºÄ Ê±       £º%sÃë"% times)
+                print(" è€— æ—¶       ï¼š%sç§’"% times)
                 print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
 
 
 def validateFileName(sname):
     ##    \/:*?"<>|
-    ##  \/: Â·¾¶  *? Í¨Åä·û  " ÎÄ¼şÂ·¾¶  <> ÖØ¶¨Ïò  | ¹ÜµÀ
+    ##  \/: è·¯å¾„  *? é€šé…ç¬¦  " æ–‡ä»¶è·¯å¾„  <> é‡å®šå‘  | ç®¡é“
     good = re.sub('[\/:*?"<>|]','_',sname)
     good2 = good.strip()   
     return good2
@@ -70,16 +70,16 @@ def getOneVideo(url,save_to_path='./'):
     try:
         div_wbtext = browser.find_element_by_class_name("weibo-text")
     except NoSuchElementException as msg:
-        strmsg = url+"\ntarget: find_element_by_class_name(\"weibo-text\")\nError: "+u"²éÕÒÔªËØÒì³£%s"%msg              
+        strmsg = url+"\ntarget: find_element_by_class_name(\"weibo-text\")\nError: "+u"æŸ¥æ‰¾å…ƒç´ å¼‚å¸¸%s"%msg              
         print(strmsg)
         browser.close()
         return
-    else:# ´¦Àí¹ıÂËwbtextÖĞµÄÒì³£×Ö·ûÂÒÂëµÈ
+    else:# å¤„ç†è¿‡æ»¤wbtextä¸­çš„å¼‚å¸¸å­—ç¬¦ä¹±ç ç­‰
         videoname = div_wbtext.text
         print(videoname)
         vn = videoname.strip('\n')
         videoname3 = validateFileName(vn)
-        if(len(videoname3)>30): #ÎÄ¼şÃû¶ÌÃû»¯´¦Àí
+        if(len(videoname3)>30): #æ–‡ä»¶åçŸ­ååŒ–å¤„ç†
             shortname = videoname3[0:30] + "..."
         else:
             shortname = videoname3
@@ -87,16 +87,16 @@ def getOneVideo(url,save_to_path='./'):
         try:
             btnplayer = browser.find_element_by_xpath("//button[@class='mwbv-play-button']")
         except NoSuchElementException as msg:
-            print(url+"\ntarget: //button[@class='mwbv-play-button']\nError: "+u"²éÕÒÔªËØÒì³£%s"%msg)
+            print(url+"\ntarget: //button[@class='mwbv-play-button']\nError: "+u"æŸ¥æ‰¾å…ƒç´ å¼‚å¸¸%s"%msg)
             browser.close()
             return   
-        else:# »ñÈ¡ÊÓÆµÔ´Á´
-            btnplayer.click() #±ØĞëÄ£Äâµã»÷£¬weiboµÄjs²Å»á½âÎö¿ÉÓÃµÄssig                 
+        else:# è·å–è§†é¢‘æºé“¾
+            btnplayer.click() #å¿…é¡»æ¨¡æ‹Ÿç‚¹å‡»ï¼Œweiboçš„jsæ‰ä¼šè§£æå¯ç”¨çš„ssig                 
             video = browser.find_element_by_xpath("//video")
             videoUrls = video.get_attribute("src") 
             if(len(videoUrls)<=0):
-                print( "Warning!: »ñÈ¡ÊÓÆµsrcÊ§°Ü!:\n   " + videoname3 + "\n   " + url + "\n" )
-            # ÏÂÔØÊÓÆµÎÄ¼ş
+                print( "Warning!: è·å–è§†é¢‘srcå¤±è´¥!:\n   " + videoname3 + "\n   " + url + "\n" )
+            # ä¸‹è½½è§†é¢‘æ–‡ä»¶
             start = time.clock()
             stime = datetime.datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
             print(stime + " Downloading... : %s" % shortname)
@@ -104,14 +104,14 @@ def getOneVideo(url,save_to_path='./'):
             response = requests.get(videoUrls)
             if response.status_code == 200:
                 with open( fn , 'wb') as f:                
-                    # ÒÔ¶ş½øÖÆĞ´Èëµ½±¾µØ
+                    # ä»¥äºŒè¿›åˆ¶å†™å…¥åˆ°æœ¬åœ°
                     f.write(response.content)
                     f.close()
                     end = time.clock()
                     times = (end - start)
                     etime = datetime.datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
                     print(etime + " Download Over   : %s" % shortname)
-                    print(" ºÄ Ê±       £º%sÃë"% times)
+                    print(" è€— æ—¶       ï¼š%sç§’"% times)
                     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
                     
                     
@@ -143,17 +143,17 @@ def preHandleWebUrls(filename):
     for index in range(lens):
         line = contents[index]        
         if((len(line) == exampleLenths) and (line.find('m.weibo.cn')>0)):
-            #https://m.weibo.cn/1231317854/4303609405582510Ìæ»»³É   #https://m.weibo.cn/status/4298029131336650?
+            #https://m.weibo.cn/1231317854/4303609405582510æ›¿æ¢æˆ   #https://m.weibo.cn/status/4298029131336650?
             i = line.find('/',12,exampleLenths)
             s1 = line[0:i+1]
             j = line.find('/',i+5,exampleLenths)
             s3 = line[j:]
             url = s1+'status'+s3
             print(url)
-##            #ÌŞ³ıÍøÒ³ÖĞÎŞvideoµÄurl
+##            #å‰”é™¤ç½‘é¡µä¸­æ— videoçš„url
 ##            if(url in NotExsiteVideoUrls):
 ##                continue
-            #È¥ÖØ
+            #å»é‡
             if url not in urls:
                 urls.append(url)
                 counts = counts + 1
@@ -161,7 +161,7 @@ def preHandleWebUrls(filename):
             continue
     end = time.clock()
     times = (end - start)
-    print ('´¦Àí%sÌõVideoUrls'%lens) + ('Á´½Ó×ª»»[  %s ]Ìõ'%counts) + (" ÓÃÊ±£º%s"% times)
+    print ('å¤„ç†%sæ¡VideoUrls'%lens) + ('é“¾æ¥è½¬æ¢[  %s ]æ¡'%counts) + (" ç”¨æ—¶ï¼š%s"% times)
     print('==============================================')
     sf = './handledwellUrls%s.txt'% datetime.datetime.now().strftime('[%Y-%m-%d %H %M %S]')
     with open(sf,'w+') as savefile:
@@ -171,9 +171,9 @@ def preHandleWebUrls(filename):
     return urls 
 
 def saveToFile(filecontent):
-    #»ñµÃµ±Ç°Ê±¼äÊ±¼ä´Á 
+    #è·å¾—å½“å‰æ—¶é—´æ—¶é—´æˆ³ 
     now = int(time.time()) 
-    #×ª»»ÎªÆäËûÈÕÆÚ¸ñÊ½,Èç:"%Y-%m-%d %H:%M:%S" 
+    #è½¬æ¢ä¸ºå…¶ä»–æ—¥æœŸæ ¼å¼,å¦‚:"%Y-%m-%d %H:%M:%S" 
     timeStruct = time.localtime(now) 
     strTime = time.strftime("%Y-%m-%d %H:%M:%S", timeStruct)
     filecontent = filecontent + "\n" + strTime + "\n"
@@ -188,13 +188,13 @@ def getVideoUrlsAndNames(urls):
     for url in urls:
         start = time.clock()
         counts = counts +1
-        print("µÚ[ " + str(counts) + " ]Ìõ:" + url)
+        print("ç¬¬[ " + str(counts) + " ]æ¡:" + url)
         browser.get(url)
-        #get Ğ¡ÊÓÆµÃû
+        #get å°è§†é¢‘å
         try:
             div_wbtext = browser.find_element_by_class_name("weibo-text")
         except NoSuchElementException as msg:
-            strmsg = url+"\ntarget: find_element_by_class_name(\"weibo-text\")\nError: "+u"²éÕÒÔªËØÒì³£%s"%msg              
+            strmsg = url+"\ntarget: find_element_by_class_name(\"weibo-text\")\nError: "+u"æŸ¥æ‰¾å…ƒç´ å¼‚å¸¸%s"%msg              
             print(strmsg)
             saveToFile(url)
             continue   
@@ -207,21 +207,21 @@ def getVideoUrlsAndNames(urls):
         try:
             btnplayer = browser.find_element_by_xpath("//button[@class='mwbv-play-button']")
         except NoSuchElementException as msg:
-            print(url+"\ntarget: //button[@class='mwbv-play-button']\nError: "+u"²éÕÒÔªËØÒì³£%s"%msg)
+            print(url+"\ntarget: //button[@class='mwbv-play-button']\nError: "+u"æŸ¥æ‰¾å…ƒç´ å¼‚å¸¸%s"%msg)
             continue   
         else:
-            btnplayer.click() #±ØĞëÄ£Äâµã»÷£¬weiboµÄjs²Å»á½âÎö³öºÏ·¨µÄssig ´Ópage sourceÖ±½ÓÕÒ×ÅµÄÎŞ·¨Ê¹ÓÃ
+            btnplayer.click() #å¿…é¡»æ¨¡æ‹Ÿç‚¹å‡»ï¼Œweiboçš„jsæ‰ä¼šè§£æå‡ºåˆæ³•çš„ssig ä»page sourceç›´æ¥æ‰¾ç€çš„æ— æ³•ä½¿ç”¨
                  
         video = browser.find_element_by_xpath("//video")
         videoUrls = video.get_attribute("src")
         if(len(videoUrls)<=0):
-            print( "Warning!: »ñÈ¡ÊÓÆµsrcÊ§°Ü!:\n   " + videoname3 + "\n   " + url + "\n" )
+            print( "Warning!: è·å–è§†é¢‘srcå¤±è´¥!:\n   " + videoname3 + "\n   " + url + "\n" )
             continue
         videodicts[videoname3]=videoUrls        
         end = time.clock()
         times = (end - start)
         print(videoUrls)
-        print(" ÓÃÊ±£º%sÃë"% times)
+        print(" ç”¨æ—¶ï¼š%sç§’"% times)
         print("\n")
     browser.close()
     return videodicts
@@ -229,7 +229,7 @@ def getVideoUrlsAndNames(urls):
 def main():        
     if not os.path.exists(g_dir):
         os.mkdir(g_dir)
-    fnlist = [r'´ıÏÂÔØÊÓÆµ.txt',r'https_m.weibo.txt',r'http_www.fast.txt']
+    fnlist = [r'å¾…ä¸‹è½½è§†é¢‘.txt',r'https_m.weibo.txt',r'http_www.fast.txt']
     for x in fnlist:
         filename =  './' + x
         urls = preHandleWebUrls(filename)
@@ -243,17 +243,4 @@ if __name__ == '__main__':
 ##    url = 'https://m.weibo.cn/detail/4277600509482250#&video'
 ##    watchOneVideo(url)
 ##    getOneVideo(url)
-    
-    ##========================================================================================
-    #  Enjoy Coding , Share GPoint
-    #
-    #  ²¢·ÇÍêÃÀÖ÷ÒåÕß£¬Ğ¡´ïÄ¿µÄ¼´¿É¡£ µ«»¹ÊÇÒªĞ¡½á£º
-    #  µ±Ç°·½·¨Ö»ÊÇ±ãÒËÖ®·¨£¬²ÉÓÃÁËÏÂÃæÁ½ÖÖ·½Ê½µÄ»ìºÏÊµÏÖ£¬ºóĞø¿ÉÒÔ¸ÄÔì³É²¢ĞĞÏÂÔØ·½Ê½£¬¶àÏß³Ì¡£
-    #      µ±VideoSourcesÊıÁ¿´ïµ½Ò»¶¨ÊıÁ¿Ê±Æô¶¯Ïû·ÑÕßÏß³ÌÏÂÔØ....
-    #
-    # À©Õ¹ÓëºóĞø¿ÉÄÜµÄ¼¼Êõ¿Õ¼ä
-    #  Ò»ÖÖ¿ÉÄÜÊÇÖ±½Ó²Ù×÷browserÏÂÔØ ²Î¿¼ selenium ¹ÙÍøÎÊÌâÊ¹ÓÃ»ğºüä¯ÀÀÆ÷ÌØĞÔ×Ô¶¯ÏÂÔØ..... browser.executeScript(js)
-    #  Ò»ÖÖ¿ÉÄÜÊ¹ÓÃÍêÈ«µÄÄ£Äâä¯ÀÀÆ÷µã»÷ ÓÒ¼üµ¥»÷ Êó±êÒÆ¶¯  µã»÷²Ëµ¥  sendkeys 'ctrl+s' mouseclick µÈ Ğè½áºÏpyAutoGUI²Ù×÷
-    #  Ò»ÖÖ¿ÉÄÜ Éî¶È½âÎö³öÒ³ÃæµÄjs²ÎÊı....
-    #
-    ###########################################################################################
+
