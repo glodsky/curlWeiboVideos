@@ -23,7 +23,7 @@ def get_proxiesPOOLs():
         details = contents[i].split(',')
         proxy= {details[2].strip('\n') :"%s:%s"%(details[0],details[1])}
         Proxies_POOLs.append(proxy)     
-    print ( Proxies_POOLs[32])
+    #print ( Proxies_POOLs[32])
     
 
 #定义页面打开函数
