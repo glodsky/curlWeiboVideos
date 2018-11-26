@@ -76,7 +76,7 @@ def get_userInfo(id):
         urank=content.get('userInfo').get('urank')
         userInfor = {"微博昵称": name,"微博主页地址": profile_url, \
                      "微博头像地址" : profile_image_url,"是否认证" : str(verified), \
-                     "微博说明" : description,"关注人数" : str(guanzhu), \
+                     "微博说明" : description.replace("\'",""),"关注人数" : str(guanzhu), \
                      "粉丝数" : str(fensi),"性别" : gender,"微博等级" : str(urank) }
         WEIBO_USER_BASE_INFOR.append(userInfor)
         
