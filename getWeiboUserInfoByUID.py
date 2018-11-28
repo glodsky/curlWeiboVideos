@@ -9,9 +9,6 @@ import random
 WEIBO_USER_BASE_INFOR = []
 Proxies_POOLs =[]
 
-#设置代理IP
-proxy_addr="175.155.138.182:1133"
-
 def get_proxiesPOOLs():
     #初始化IP代理池
     global Proxies_POOLs
@@ -27,12 +24,12 @@ def get_proxiesPOOLs():
     
 
 #定义页面打开函数
-def use_proxy(url,proxy_addr):
+def use_proxy(url):
     global Proxies_POOLs
     req=urllib.request.Request(url)
     proxy_addr = Proxies_POOLs[random.randint(0,len(Proxies_POOLs)-1)]
     req.add_header("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0")
-    proxy=urllib.request.ProxyHandler({'http':proxy_addr})
+    proxy=urllib.request.ProxyHandler(proxy_addr)
     opener=urllib.request.build_opener(proxy,urllib.request.HTTPHandler)
     urllib.request.install_opener(opener)
     data=urllib.request.urlopen(req).read().decode('utf-8','ignore')
