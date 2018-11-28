@@ -54,9 +54,6 @@ def init_UrlInfor(uid,page):
 def download_video(video_name,stream_url):
     print(u"%s downloading ......"% datetime.datetime.now().strftime('[%H:%M:%S]'))
     stime = time.perf_counter()
-    #status, content = url_open(url)
-    #if status == 200:                            
-    #browser.get(stream_url)
     response = requests.get(stream_url)
     if response.status_code == 200:
         fn = open(video_name,'wb')
