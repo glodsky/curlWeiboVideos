@@ -103,7 +103,7 @@ def waiting_times(judge,times = None):
     if( judge % 3 == 0):     
         time.sleep(sleeptime)
     
-def get_weiboAllPictureByUID(uid):
+def getAllVideosInWeiboByUID(uid):
     count = 0
     cur_page= 0
     while True:
@@ -159,7 +159,7 @@ def get_weiboAllPictureByUID(uid):
 def main():
     id_list = ['1402400261','2155926845','6070772899','3942238643']
     for uid in id_list:
-        get_weiboAllPictureByUID(uid)
+        getAllVideosInWeiboByUID(uid)
               
     
 if __name__=="__main__":
