@@ -36,10 +36,11 @@ def get_containerid(url):
     return containerid 
 
 def get_ShortName(filename):    #文件名太长,截断
-    if len(filename)>25:
-        return filename[:25]
+    fn = filename.strip()
+    if len(fn)>50:
+        return fn[:50]
     else:
-        return filename
+        return fn
     
 def init_UrlInfor(uid,page):    
     url='https://m.weibo.cn/api/container/getIndex?type=uid&value='+ uid
@@ -54,6 +55,9 @@ def init_UrlInfor(uid,page):
 def download_video(video_name,stream_url):
     print(u"%s downloading ......"% datetime.datetime.now().strftime('[%H:%M:%S]'))
     stime = time.perf_counter()
+    #status, content = url_open(url)
+    #if status == 200:                            
+    #browser.get(stream_url)
     response = requests.get(stream_url)
     if response.status_code == 200:
         fn = open(video_name,'wb')
@@ -83,7 +87,25 @@ def filter_Non_BMP_Characters(target):
 def get_VideoNameAndUrl(mblog,dirName):
     #text =re.sub('[\/:*?"<>|，：、]','_',mblog["text"]).replace(" ","") 
     page_info = mblog["page_info"]
-    media_type = page_info["type"]  #类型 作 扩展名 
+    media_type = page_info["type"]  #类型 作 扩展名
+
+    create_at   = mblog["created_at"]
+    if create_at.find("小时前") != -1 : # 最近二天 格式
+        before_hours = int( create_at.split("小")[0] )
+        create_at = (datetime.datetime.now()+datetime.timedelta(hours= -before_hours )).strftime("%Y-%m-%d")
+    elif create_at.find("分钟前")!= -1:
+        create_at = datetime.datetime.now().strftime("%Y-%m-%d")
+    elif create_at.find("昨天") != -1 :
+        create_at = (datetime.datetime.now()+datetime.timedelta(days= -1 )).strftime("%Y-%m-%d")
+    else:
+        which = create_at.split('-')
+        if(len(which) == 2 ):      # 今年的 都是 '11-09' 之类的格式         
+            year = time.strftime('%Y',time.localtime(time.time()))
+            create_at = "%s-%s"%(year,create_at)
+        elif(len(which)== 3 ):    # 去年的  都是 '2017-11-09' 之类的格式
+            pass   
+        else:
+            pass 
     if media_type == "article":
         return ("","")
     elif media_type == "video":
@@ -91,7 +113,7 @@ def get_VideoNameAndUrl(mblog,dirName):
         content2 = filter_Non_BMP_Characters(content2)
         shortname = get_ShortName(content2)
         stream_url = page_info.get("media_info")["stream_url"]
-        video_name = "%s/%s.%s"%(dirName,content2,media_type)
+        video_name = "%s/%s_%s.%s"%(dirName,str(create_at),shortname,media_type)
         return video_name,stream_url
     else:
         return ("","")
@@ -103,7 +125,7 @@ def waiting_times(judge,times = None):
     if( judge % 3 == 0):     
         time.sleep(sleeptime)
     
-def getAllVideosInWeiboByUID(uid):
+def get_weiboAllPictureByUID(uid):
     count = 0
     cur_page= 0
     while True:
@@ -112,6 +134,9 @@ def getAllVideosInWeiboByUID(uid):
         url,weibo_url = init_UrlInfor(uid,cur_page)
         try:
             proxy_status,data = use_proxy(weibo_url)
+            if weibo_url == "":
+                print("搜罗完毕")
+                break
             if proxy_status != 200:
                 continue            
             ok   = int(json.loads(data)['ok'])
@@ -143,7 +168,7 @@ def getAllVideosInWeiboByUID(uid):
                             continue
                         if os.path.exists(video_name):
                             print("已下载过了%s"%(video_name.split("/")[-1]))
-                            continue                        
+                            continue
                         download_video(video_name,stream_url)
                         count = count + 1    #下载总数                        
                         waiting_times(cur_page)        
@@ -153,14 +178,15 @@ def getAllVideosInWeiboByUID(uid):
             break                  
 
     print('>>>>>>>>>>>>>>>>>>>')
-    print('共计：%s'%count)                         
+    print('下载视频共计：%s'%count)                         
 
      
-def main():
-    id_list = ['1402400261','2155926845','6070772899','3942238643']
-    for uid in id_list:
-        getAllVideosInWeiboByUID(uid)
-              
+def main():    
+    id_list = ['2815133121']  
+    for uid in id_list: 
+        get_weiboAllPictureByUID(uid)
+ 
+        
     
 if __name__=="__main__":
     main()
